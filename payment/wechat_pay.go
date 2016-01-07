@@ -6,11 +6,10 @@ import (
 	"io"
 	"models"
 	"net"
+	"services/order"
 	"strconv"
 	"strings"
 	"time"
-
-	"services/order"
 
 	"github.com/chanxuehong/util"
 	"github.com/chanxuehong/wechat/mch"
@@ -32,24 +31,19 @@ type WechatPay struct {
 }
 
 const (
-	appid      string = ""
-	mchid      string = ""
-	apiKey     string = ""
-	appSecret  string = ""
-	tradeType  string = ""
-	orderUrl   string = ""
-	payTimeout string = ""
+	appid      string = "wxb5636d699fc1b88b"
+	mchid      string = "1227429802"
+	apiKey     string = "F5483873309762D60EBE8F6E2F987AD9"
+	appSecret  string = "1fea0e0ce8ecada2c9f4e319cdbd8d14"
+	tradeType  string = "NATIVE"
+	orderUrl   string = "https://api.mch.weixin.qq.com/pay/unifiedorder"
+	payTimeout string = "30m"
 )
 
-func NewWechatPay() (wp *WechatPay, err error) {
-
-	notifyUrl, err := utils.Cfg.GetString("wechat_pay", "notify_url")
-	if err != nil {
-		return nil, err
-	}
-
+func NewWechatPay(order OrderInfo, notifyUrl string) (wp *WechatPay, err error) {
 	wp = &WechatPay{
 		notifyUrl:    notifyUrl,
+		order:        order,
 		params:       make(map[string]string),
 		noticeParams: make(map[string]string),
 	}
@@ -80,24 +74,15 @@ func (p *WechatPay) setParams() (err error) {
 	return err
 }
 
-func (p *WechatPay) validOrder(orderNo string) (err error) {
-	order, err := orderSrv.NewOrder(orderNo)
-	if err != nil {
-		return
+func (p *WechatPay) IsOrderValid() bool {
+	if p.Order.Valid() != nil {
+		return false
 	}
+	return true
 
-	if err = order.Valid(); err != nil {
-		return
-	}
-
-	p.order = order
-	return
 }
 
-func (p *WechatPay) Pay(orderNo string) (codeUrl string, err error) {
-	if err = p.validOrder(orderNo); err != nil {
-		return
-	}
+func (p *WechatPay) Pay() (codeUrl string, err error) {
 
 	if err = p.setParams(); err != nil {
 		return

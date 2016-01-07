@@ -11,10 +11,10 @@ import (
 )
 
 const (
-	NotifyUrl   string = ""
-	Partner     string = ""
-	Key         string = ""
-	SellerEmail string = ""
+	NotifyUrl   string = "http://120.26.80.105:8080/alipay/notify"
+	Partner     string = "2088811198755564"
+	Key         string = "vfdr3c0kg2kzdac2kc3x9xmdrv4kzngm"
+	SellerEmail string = "souvenir@chinarun.com"
 )
 
 type Alipay struct {
