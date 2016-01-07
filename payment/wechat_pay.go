@@ -31,13 +31,13 @@ type WechatPay struct {
 }
 
 const (
-	appid      string = "wxb5636d699fc1b88b"
-	mchid      string = "1227429802"
-	apiKey     string = "F5483873309762D60EBE8F6E2F987AD9"
-	appSecret  string = "1fea0e0ce8ecada2c9f4e319cdbd8d14"
-	tradeType  string = "NATIVE"
-	orderUrl   string = "https://api.mch.weixin.qq.com/pay/unifiedorder"
-	payTimeout string = "30m"
+	appid      string = ""
+	mchid      string = ""
+	apiKey     string = ""
+	appSecret  string = ""
+	tradeType  string = ""
+	orderUrl   string = ""
+	payTimeout string = ""
 )
 
 func NewWechatPay(order OrderInfo, notifyUrl string) (wp *WechatPay, err error) {
